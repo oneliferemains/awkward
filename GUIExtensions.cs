@@ -45,16 +45,24 @@ public class GUIEx
 			state.currentString = text;
 		}
 
-		bool textValidated = false;
-		if (Event.current.GetTypeForControl(controlID) == EventType.KeyDown) 
+		bool textValidated      = false;
+    Event currentEvt        = Event.current;
+    //bool clickedOutside     = currentEvt.type == EventType.MouseDown && !rect.Contains(currentEvt.mousePosition);
+    bool keyboardValidated  = (currentEvt.GetTypeForControl(controlID) == EventType.KeyDown) && 
+                              ( Event.current.keyCode == KeyCode.KeypadEnter || 
+					                      Event.current.keyCode == KeyCode.Return || 
+					                      Event.current.keyCode == KeyCode.Tab);
+
+    // if(GUIUtility.keyboardControl == controlID && currentEvt.type == EventType.MouseDown)
+    // {
+    //   Debug.LogFormat("Field {0} has been clicked outside ? {1}", text, clickedOutside);
+    // }
+
+		//if (GUIUtility.keyboardControl == controlID && (clickedOutside || keyboardValidated)) 
+    if(keyboardValidated)
 		{
-			if(	Event.current.keyCode == KeyCode.KeypadEnter || 
-					Event.current.keyCode == KeyCode.Return || 
-					Event.current.keyCode == KeyCode.Tab
-				)
-			{
-				textValidated = true;
-			}
+      //Debug.LogFormat("Field {0} has been validated with keyb:{1} mouse:{2}", text, keyboardValidated, clickedOutside);
+			textValidated = true;
 		}
 
 		state.currentString = GUI.TextField(rect, state.currentString);
@@ -170,10 +178,20 @@ public class GUILayoutEx
 	}
 
 
+  static List<System.Type> inspectableTypes = new List<System.Type>()
+  { 
+    typeof(Color32), typeof(Color), typeof(Vector3)
+  };
 
-
-	public static void StructInspector<T>(ref T inspectorData)
+	public static void StructInspector<T>(ref T inspectorData, int recursiveDepth = 0)
 	{
+    // Debug.Log("Inspector for " + inspectorData.GetType().ToString());
+    if(recursiveDepth > 1)
+    {
+      Debug.LogWarning("reached max recursive depth for struct inspector");
+      return;
+    }
+
 		// reflection set value make a copy of a struct, even if this one is passed by ref
 		// so we copy the struct into an object that can be set as reference
 		object boxedData = inspectorData;
@@ -191,8 +209,31 @@ public class GUILayoutEx
 			object[] attr = field.GetCustomAttributes(false);
 			TooltipAttribute tooltip = (TooltipAttribute)System.Array.Find(attr, (x) => x.GetType() == typeof(TooltipAttribute));
 			
-			object editedData = VarField(field.Name, field.GetValue(inspectorData), tooltip == null ? "" : tooltip.tooltip);
-			field.SetValue(boxedData, editedData);
+      object fieldData = field.GetValue(inspectorData);
+      if(fieldData.GetType().IsPrimitive)
+      {
+			  object editedData = VarField(field.Name, fieldData, tooltip == null ? "" : tooltip.tooltip);
+			  field.SetValue(boxedData, editedData);
+      }else
+      {
+        // Debug.Log("Object " + fieldData.GetType().ToString() + " is not of primitive type");
+        if(inspectableTypes.Contains(fieldData.GetType()))
+        {
+          // Debug.Log("<b>object could be inspectable</b>");
+          GUILayout.Label(field.Name);
+          StructInspector(ref fieldData, recursiveDepth++);
+  			  field.SetValue(boxedData, fieldData);
+        }else if(fieldData.GetType() == typeof(string))
+        {
+          GUILayout.Label(field.Name);
+          string newData = GUILayoutEx.DelayedTextField(fieldData.ToString());
+          if(newData != fieldData.ToString())
+          {
+            fieldData = newData;
+            field.SetValue(boxedData, fieldData);
+          }
+        }
+      }
 
 			GUILayout.EndHorizontal();
 		}
@@ -216,7 +257,14 @@ public class GUILayoutEx
 		{
 			object[] attr = field.GetCustomAttributes(false);
 			TooltipAttribute tooltip = (TooltipAttribute)System.Array.Find(attr, (x) => x.GetType() == typeof(TooltipAttribute));
-			VarField(field.Name, field.GetValue(windata.data), tooltip == null ? "" : tooltip.tooltip);
+      object data = field.GetValue(windata.data);
+      if(data.GetType().IsPrimitive)
+      {
+			  VarField(field.Name, data, tooltip == null ? "" : tooltip.tooltip);
+      }else
+      {
+        StructInspector(ref data);
+      }
 		}
 
 		GUI.DragWindow(new Rect(0, 0, 10000, 20));
