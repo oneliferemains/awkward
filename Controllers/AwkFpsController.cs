@@ -11,9 +11,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class FpsController : MonoBehaviour
+public class AwkFpsController : MonoBehaviour
 {
-
   public float speed = 5.0f;
   private float m_MovX;
   private float m_MovY;
