@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using System;
 using System.IO;
 using System.Diagnostics;
-using Debug = UnityEngine.Debug;
 
 static public class EditorContextMenu {
 
