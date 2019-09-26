@@ -62,7 +62,7 @@ static public class HalperExternal
     }
 
     File.WriteAllText(generatePath(profil, file), JsonUtility.ToJson(data));
-    Debug.Log("saved json file "+file+" ("+profil+")");
+    Debug.Log("saved json file : "+file+" | profil : <b>"+profil+"</b>");
   }
 
   public static T loadFromJson<T>(string profil, string file)
