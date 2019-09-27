@@ -61,7 +61,11 @@ public class EditorCustomBuild
 
     // externals
     FileUtil.DeleteFileOrDirectory(buildFolder + "/external");
-    FileUtil.CopyFileOrDirectory(HalperExternal.GetExternalFolder(), buildFolder + "/external");
+    string externalPath = HalperExternal.GetExternalFolder();
+    if(System.IO.File.Exists(externalPath))
+    {
+      FileUtil.CopyFileOrDirectory(externalPath, buildFolder + "/external");
+    }
   }
 
 
