@@ -29,6 +29,7 @@ public class GameSetup : MonoBehaviour
   {
     if (Input.GetKeyUp(KeyCode.Backspace)) Application.Quit();
     if (Input.GetKeyUp(KeyCode.RightShift)) reboot();
+    if (Input.GetKeyUp(KeyCode.N)) ScreenshotManager.call();
   }
 
   public void reboot()
