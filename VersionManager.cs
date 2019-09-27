@@ -142,4 +142,44 @@ public class VersionManager : MonoBehaviour
 
 #endif
 
+  float timer = 2f;
+
+  private void OnGUI()
+  {
+    if (timer < 0f) return;
+    
+    timer -= Time.deltaTime;
+    
+    string v = Application.version;
+
+    GUIStyle guis = new GUIStyle();
+
+    guis.normal.textColor = Color.gray;
+
+    guis.fontSize = 30;
+    float width = 150f;
+    float height = 50f;
+
+    if (Screen.width >= 1000f)
+    {
+      guis.fontSize = 50;
+      width = 300f;
+      height = 150f;
+    }
+
+    // must be safe from rounded angle on mobile
+
+    GUI.Label(new Rect(Screen.width - width, Screen.height - height, width, height), v, guis);
   }
+
+  [RuntimeInitializeOnLoadMethod]
+  static public void displayOnStartup()
+  {
+    logVersion();
+
+#if !noversion
+    new GameObject("!version").AddComponent<VersionManager>();
+#endif
+  }
+
+}
