@@ -17,9 +17,8 @@ public class FollowMouse2D : MonoBehaviour
     if (cam == null) cam = Camera.main;
 
     Vector3 mouseScreenPos = Input.mousePosition;
-    mouseScreenPos.z = cam.transform.position.z;
+    mouseScreenPos.z = -cam.transform.position.z + zPosition;
     mouseScreenPos = cam.ScreenToWorldPoint(mouseScreenPos);
-    mouseScreenPos.z = cam.transform.position.z + zPosition;
     transform.position = mouseScreenPos;
   }
 
