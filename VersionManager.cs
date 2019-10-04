@@ -175,7 +175,7 @@ public class VersionManager : MonoBehaviour
   [RuntimeInitializeOnLoadMethod]
   static public void displayOnStartup()
   {
-    logVersion();
+    //logVersion();
 
 #if !noversion
     new GameObject("!version").AddComponent<VersionManager>();
