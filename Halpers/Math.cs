@@ -6,5 +6,12 @@
     {
       return targetMin + (targetMax-targetMin) * ( (val-sourceMin) / (sourceMax-sourceMin) );
     }
+
+    static public float loop(float val, float min, float max)
+    {
+      if (val > max) val = max - val;
+      else if (val < min) val = val + max;
+      return val;
+    }
   }
 }
