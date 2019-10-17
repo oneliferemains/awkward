@@ -7,6 +7,7 @@ using System.Reflection;
 // delayed text selection auto de tout le texte
 // sauvegarde si on sort du texte
 
+
 public class GUIEx
 {
 	public class TextFieldOnCompleteInfo
@@ -38,14 +39,16 @@ public class GUIEx
 		var state = (TextFieldOnCompleteInfo)GUIUtility.GetStateObject(
 																					typeof(TextFieldOnCompleteInfo), 
 																					controlID);
-
-		if(state.startString == "") 
+    
+		if(state.startString == "")
 		{
 			state.startString 	= text;
 			state.currentString = text;
 		}
+    
+    //state.startString = state.currentString = text;
 
-		bool textValidated      = false;
+    bool textValidated      = false;
     Event currentEvt        = Event.current;
     //bool clickedOutside     = currentEvt.type == EventType.MouseDown && !rect.Contains(currentEvt.mousePosition);
     bool keyboardValidated  = (currentEvt.GetTypeForControl(controlID) == EventType.KeyDown) && 
@@ -161,17 +164,22 @@ public class GUILayoutEx
 	// creates a Label + a delayed text field to display a variabla data
 	public static object VarField(string label, object data, string tooltip = "")
 	{
-		if(!data.GetType().IsPrimitive) 
+		if(!data.GetType().IsPrimitive)
 		{
-			Debug.LogWarning("Can't make a var fiald for label " + label + " because associated data is not of a primitive type");
+			Debug.LogWarning("Can't make a var field for label " + label + " because associated data is not of a primitive type");
 			return data;
 		}
+
 		GUILayout.BeginHorizontal();
 		GUILayout.Label(new GUIContent(label, tooltip), GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
 		string editedData = GUILayoutEx.DelayedTextField(data.ToString(), GUILayout.MinWidth(50));
+
+    //Debug.Log("  in " + data + " , out " + editedData);
+
 		if(editedData != data.ToString())
 		{
 			data = TypeHelper.GetValueFromString(editedData, data.GetType());
+      //Debug.Log("overrided data with value : " + editedData);
 		}
 		GUILayout.EndHorizontal();
 		return data;
@@ -183,7 +191,7 @@ public class GUILayoutEx
     typeof(Color32), typeof(Color), typeof(Vector3)
   };
 
-	public static void StructInspector<T>(ref T inspectorData, int recursiveDepth = 0)
+	public static void StructInspector<T>(ref T inspectorData, int recursiveDepth = 0, float width = 200f)
 	{
     // Debug.Log("Inspector for " + inspectorData.GetType().ToString());
     if(recursiveDepth > 1)
@@ -192,29 +200,42 @@ public class GUILayoutEx
       return;
     }
 
+    GUILayout.BeginVertical();
+
 		// reflection set value make a copy of a struct, even if this one is passed by ref
 		// so we copy the struct into an object that can be set as reference
 		object boxedData = inspectorData;
 
 		GUI.contentColor = Color.yellow;
 		GUILayout.Label(inspectorData.GetType().Name);
-
+    
 		GUI.contentColor = Color.white;
 		FieldInfo[] fields = inspectorData.GetType().GetFields();
 		foreach (var field in fields)
 		{
-			GUILayout.BeginHorizontal();
-			GUILayout.Space(10);
+			GUILayout.BeginHorizontal(GUILayout.Width(width));
+      GUILayout.Space(10);
 
-			object[] attr = field.GetCustomAttributes(false);
+      object[] attr = field.GetCustomAttributes(false);
 			TooltipAttribute tooltip = (TooltipAttribute)System.Array.Find(attr, (x) => x.GetType() == typeof(TooltipAttribute));
 			
       object fieldData = field.GetValue(inspectorData);
+
+      //Debug.Log(fieldData);
+      //Debug.Log(fieldData.GetType());
+
+      //note : can't use non-primitive types (like string)
+
       if(fieldData.GetType().IsPrimitive)
       {
+        
 			  object editedData = VarField(field.Name, fieldData, tooltip == null ? "" : tooltip.tooltip);
-			  field.SetValue(boxedData, editedData);
-      }else
+
+        //Debug.Log(field.Name + " ; data = " + fieldData+" ; edited = "+editedData);
+        
+        field.SetValue(boxedData, editedData);
+      }
+      else
       {
         // Debug.Log("Object " + fieldData.GetType().ToString() + " is not of primitive type");
         if(inspectableTypes.Contains(fieldData.GetType()))
@@ -230,6 +251,9 @@ public class GUILayoutEx
           if(newData != fieldData.ToString())
           {
             fieldData = newData;
+
+            Debug.Log("new data : " + newData);
+
             field.SetValue(boxedData, fieldData);
           }
         }
@@ -238,6 +262,8 @@ public class GUILayoutEx
 			GUILayout.EndHorizontal();
 		}
 		inspectorData = (T)boxedData;
+
+    GUILayout.EndVertical();
 	}
 
 

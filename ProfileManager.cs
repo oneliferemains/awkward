@@ -15,6 +15,19 @@ using UnityEditor;
 static public class ProfileManager
 {
   public const string profile_index_pp = "profile_index";
+  
+  static public string activeProfil = "none";
+
+  [RuntimeInitializeOnLoadMethod]
+  static public void solveActiveProfil()
+  {
+    solveActiveProfil("default");
+  }
+
+  static public void solveActiveProfil(string defaultProfileName)
+  {
+    activeProfil = ProfileManager.getActiveProfil(defaultProfileName);
+  }
 
   /// <summary>
   /// détermine le profil a utiliser
