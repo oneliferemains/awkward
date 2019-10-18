@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 public class EditorCustomBuild
 {
@@ -59,12 +60,23 @@ public class EditorCustomBuild
 
     BuildPipeline.BuildPlayer(options);
 
+    
+
     // externals
-    FileUtil.DeleteFileOrDirectory(buildFolder + "/external");
+    FileUtil.DeleteFileOrDirectory(buildFolder + "/external/");
     string externalPath = HalperExternal.GetExternalFolder();
-    if(System.IO.File.Exists(externalPath))
+
+    //externalPath = externalPath.Replace("/", "\\");
+
+    Debug.Log("now copying external folder : "+externalPath);
+
+    if (System.IO.Directory.Exists(externalPath))
     {
       FileUtil.CopyFileOrDirectory(externalPath, buildFolder + "/external");
+    }
+    else
+    {
+      Debug.LogWarning("folder "+externalPath+" doesn't exist ? can't copy it");
     }
   }
 
