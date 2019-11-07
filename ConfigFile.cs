@@ -13,6 +13,12 @@ using System.Collections.Generic;
 // }
 public class ConfigFile
 {
+  public const string CONFIG_FILE_PREFIX = "config";
+  protected const string CONFIG_FILE_CATEGORY_SYMBOL = "=";
+  protected const string CONFIG_FILE_COMMENT = "//";
+  protected const char CONFIG_FILE_PARAM_SEPARATOR = ':';
+  protected const string CONFIG_DEFAULT_CATEGORY_NAME = "DEFAULT";
+
   string filePath = "";
   ConfigCategory[] categories;
 
@@ -20,6 +26,12 @@ public class ConfigFile
   {
     filePath = filename;
     parseFile(filePath);
+  }
+
+  // this method is created because the constructor leaves unclear if the filename given is just a filename, a relative path or an absolute path
+  public static ConfigFile CreateFromExternalFolderPath(string relativeFilePath)
+  {
+    return new ConfigFile(relativeFilePath);
   }
 
   public void reload() {
@@ -201,7 +213,6 @@ public class ConfigFile
 
   void parseFile(string filename)
   {
-    
     string path = HalperExternal.GetExternalFolder() + filename;
 
     //Debug.Log("{ConfigFile} parsing config file : "+path);
@@ -248,11 +259,11 @@ public class ConfigFile
     if (idx >= data.Length) return c;
     
     string line = data[idx];
-    while (!line.StartsWith("=") && idx < data.Length)
+    while (!line.StartsWith(CONFIG_FILE_CATEGORY_SYMBOL) && idx < data.Length)
     {
-      if (line.Length > 0 && !line.StartsWith("//"))
+      if (line.Length > 0 && !line.StartsWith(CONFIG_FILE_COMMENT))
       {
-        string[] key_value = line.Split(':');
+        string[] key_value = line.Split(CONFIG_FILE_PARAM_SEPARATOR);
         //Debug.Log(line + " , " + key_value.Length);
         c.parameters[key_value[0]] = key_value[1];
       }

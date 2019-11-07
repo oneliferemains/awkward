@@ -39,7 +39,10 @@ static public class ProfileManager
     {
       int selectionIndex = getPpActiveSelectionIndex();
       Debug.Log("ppref selection is : " + selectionIndex);
-      return getProfileStrings()[selectionIndex];
+      string[] profilesStr = getProfileStrings();
+
+      if(profilesStr != null) return profilesStr[selectionIndex];
+      else return "";
     }
 #endif
 
@@ -67,6 +70,15 @@ static public class ProfileManager
 
     // called on window creation
     string[] all = AssetDatabase.FindAssets("t:ProfileData");
+
+    if(all.Length == 0)
+    {
+      Debug.LogError( "Couldn't find any profile data, please create one (Assets > Create > Awk > Create profile \n " +
+                      "name the object whatever you want and move it to Data folder.\n" +
+                      "In the content of the object, there is a string array, create as many strings as you will have profile folders in your external folder");
+      return null;
+    }
+
     for (int i = 0; i < all.Length; i++)
     {
       Object obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(all[i]), typeof(ProfileData));
@@ -78,7 +90,10 @@ static public class ProfileManager
 
   static public string[] getProfileStrings()
   {
-    return getProfilData().profiles;
+    ProfileData profs = getProfilData();
+    
+    if(profs == null) return null;
+    else return profs.profiles;
   }
 
   static public int getPpActiveSelectionIndex()
