@@ -311,7 +311,7 @@ public class ConfigCategory
       return defaultValue;
     }
     string val = parameters[paramName];
-    return float.Parse(val, CultureInfo.InvariantCulture);
+    return float.Parse(val, NumberStyles.Any, CultureInfo.InvariantCulture);
   }
 
   public int getInt(string paramName, int defaultValue = 0)
@@ -345,8 +345,8 @@ public class ConfigCategory
     string val = parameters[paramName];
     val = val.Substring(1, val.Length-2);
     string[] min_max = val.Split(';');
-    float min = float.Parse(min_max[0]);
-    float max = float.Parse(min_max[1]);
+    float min = float.Parse(min_max[0], NumberStyles.Any, CultureInfo.InvariantCulture);
+    float max = float.Parse(min_max[1], NumberStyles.Any, CultureInfo.InvariantCulture);
     return Random.Range(min, max);
   }
 
@@ -374,8 +374,8 @@ public class ConfigCategory
     string val = parameters[paramName];
     val = val.Substring(1, val.Length-2);
     string[] min_max = val.Split(';');
-    float min = float.Parse(min_max[0]);
-    float max = float.Parse(min_max[1]);
+    float min = float.Parse(min_max[0], NumberStyles.Any, CultureInfo.InvariantCulture);
+    float max = float.Parse(min_max[1], NumberStyles.Any, CultureInfo.InvariantCulture);
     return new Vector2(min, max);
   }
 
@@ -391,7 +391,7 @@ public class ConfigCategory
     float[] res = new float[arrayVals.Length];
     for (int i = 0; i < res.Length; i++)
     {
-      res[i] = float.Parse(arrayVals[i], CultureInfo.InvariantCulture);
+      res[i] = float.Parse(arrayVals[i], NumberStyles.Any, CultureInfo.InvariantCulture);
     }
     return res;
   }
@@ -430,9 +430,9 @@ public class ConfigCategory
         int firstParen = arrayVals[i].IndexOf('(');
         string s = arrayVals[i].Substring(firstParen+1);
         string[] values = s.Split(',');
-        res[i].x = float.Parse(values[0]);
-        res[i].y = float.Parse(values[1]);
-        res[i].z = float.Parse(values[2]);
+        res[i].x = float.Parse(values[0], NumberStyles.Any, CultureInfo.InvariantCulture);
+        res[i].y = float.Parse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture);
+        res[i].z = float.Parse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture);
       }
     }
 
