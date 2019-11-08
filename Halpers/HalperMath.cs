@@ -21,6 +21,11 @@ public class HalperMath
     return val > target - range && val < target + range;
   }
 
+  static public bool epsCmp(float val, float target)
+  {
+    return closeTo(val, target, Mathf.Epsilon);
+  }
+
   static public bool closeToZero(float val)
   {
     return Mathf.Abs(val) < 0.001f;

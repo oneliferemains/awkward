@@ -380,6 +380,22 @@ public class ConfigCategory
   }
 
 
+  public float[] getFloatArray(string paramName)
+  {
+    if (!parameters.ContainsKey(paramName))
+    {
+      return null;
+    }
+    string val = parameters[paramName];
+    string[] arrayVals = val.Split(',');
+    float[] res = new float[arrayVals.Length];
+    for (int i = 0; i < res.Length; i++)
+    {
+      res[i] = float.Parse(arrayVals[i], CultureInfo.InvariantCulture);
+    }
+    return res;
+  }
+
   public int[] getIntArray(string paramName)
   {
     if(!parameters.ContainsKey(paramName))
