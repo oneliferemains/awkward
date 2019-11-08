@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Globalization;
 
 // Load a config file made of CATEGORIES containing key->value pairs
 // and provides functions to retrieve those informations
@@ -311,7 +311,7 @@ public class ConfigCategory
       return defaultValue;
     }
     string val = parameters[paramName];
-    return float.Parse(val);
+    return float.Parse(val, CultureInfo.InvariantCulture);
   }
 
   public int getInt(string paramName, int defaultValue = 0)
