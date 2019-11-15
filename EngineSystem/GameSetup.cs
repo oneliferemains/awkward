@@ -36,8 +36,8 @@ public class GameSetup : MonoBehaviour
   {
     Debug.Log("<b>REBOOT</b>");
 
-    BaseObject[] bos = GameObject.FindObjectsOfType<BaseObject>();
-    foreach(BaseObject bo in bos)
+    AwkObject[] bos = GameObject.FindObjectsOfType<AwkObject>();
+    foreach(AwkObject bo in bos)
     {
       bo.reboot();
     }
