@@ -49,7 +49,7 @@ static public class HalperExternal
   public static void saveToJson(string profil, string file, string content)
   {
     //File.WriteAllText(generatePath(profil, file), JsonUtility.ToJson(content));
-    saveToJson(profil, file, content);
+    saveToJson(profil, file, (object)content);
     //Debug.Log("saved text to json");
   }
   public static void saveToJson(string profil, string file, object data)
@@ -61,13 +61,17 @@ static public class HalperExternal
       Directory.CreateDirectory(profilPath);
     }
 
-    File.WriteAllText(generatePath(profil, file), JsonUtility.ToJson(data));
-    Debug.Log("saved json file : "+file+" | profil : <b>"+profil+"</b>");
+    string json = JsonUtility.ToJson(data, true);
+    File.WriteAllText(generatePath(profil, file), json);
+    Debug.Log("saved json file : " + file + " | profil : <b>" + profil + "</b> (length " + json.Length + ")\n" + json);
   }
 
   public static T loadFromJson<T>(string profil, string file)
   {
-    return (T)JsonUtility.FromJson<T>(load(profil, file));
+    Debug.Log("load " + typeof(T).ToString() + " for file : " + file);
+    string json = load(profil, file);
+    Debug.Log(json);
+    return JsonUtility.FromJson<T>(json);
   }
 
   public static bool hasExternalFile(string profil, string file)
