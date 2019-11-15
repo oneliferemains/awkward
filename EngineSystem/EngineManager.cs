@@ -66,7 +66,7 @@ public class EngineManager : MonoBehaviour
     return _loading;
   }
 
-  void reboot()
+  public void reboot()
   {
     Debug.Log(AwkObject.getStamp(this) + " rebooting");
     
