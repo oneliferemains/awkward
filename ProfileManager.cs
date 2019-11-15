@@ -38,7 +38,7 @@ static public class ProfileManager
     if (Application.isEditor)
     {
       int selectionIndex = getPpActiveSelectionIndex();
-      Debug.Log("ppref selection is : " + selectionIndex);
+      //Debug.Log("ppref selection is : " + selectionIndex);
       string[] profilesStr = getProfileStrings();
 
       if(profilesStr != null) return profilesStr[selectionIndex];

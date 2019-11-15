@@ -68,9 +68,9 @@ static public class HalperExternal
 
   public static T loadFromJson<T>(string profil, string file)
   {
-    Debug.Log("load " + typeof(T).ToString() + " for file : " + file);
+    //Debug.Log("load " + typeof(T).ToString() + " for file : " + file);
     string json = load(profil, file);
-    Debug.Log(json);
+    //Debug.Log(json);
     return JsonUtility.FromJson<T>(json);
   }
 
