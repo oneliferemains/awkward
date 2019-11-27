@@ -20,7 +20,13 @@ public class EditorCustomBuild
     BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer);
   }
 
-  static void BuildGame(BuildOptions buildOptions)
+  [MenuItem("Build/Mac Dev Build With External")]
+  public static void BuildMacDevGame()
+  {
+    BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer, BuildTarget.StandaloneOSX);
+  }
+
+  static void BuildGame(BuildOptions buildOptions, BuildTarget targetPlatform = BuildTarget.StandaloneWindows)
   {
     // executable
     string buildFolder = "Assets/../Build";
@@ -47,14 +53,20 @@ public class EditorCustomBuild
     // editor build scenes list
     options.scenes = getScenePaths();
 
+    options.target = targetPlatform;
+
     // path
-    options.locationPathName = buildFolder + "/" + buildName + ".exe";
+    if(targetPlatform == BuildTarget.StandaloneOSX)
+    {
+      buildFolder += "_osx";
+      options.locationPathName = buildFolder + "/" + buildName + ".app";
+    }else
+    {
+      options.locationPathName = buildFolder + "/" + buildName + ".exe";
+    }
     
     // flags (dev build)
     options.options = buildOptions;
-
-    // target platform : win, android, ...
-    options.target = EditorUserBuildSettings.activeBuildTarget; 
 
     UnityEngine.Debug.Log(options.locationPathName);
 
