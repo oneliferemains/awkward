@@ -8,7 +8,17 @@ abstract public class AwkObject : MonoBehaviour
   protected string log = "";
   protected bool logs = false; // display logs
   protected bool debugIsSceneOwnerActiveScene = false; // au moment où il est généré
-  
+
+  private void Awake()
+  {
+    build();
+  }
+
+  virtual protected void build()
+  {
+
+  }
+
   IEnumerator Start()
   {
     enabled = false;
