@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class AwkVrObject : AwkObject
 {
+  
   protected OVRManager ovrManager;
   protected Camera ovrCamera;
+
+  protected LineRigController rig;
   protected Transform rigTr;
 
   protected override void setupEarly()
@@ -16,6 +19,7 @@ public class AwkVrObject : AwkObject
     ovrCamera = ovrManager.GetComponentInChildren<Camera>();
 
     if (ovrCamera != null) rigTr = ovrCamera.transform;
+    rig = GameObject.FindObjectOfType<LineRigController>();
   }
 
   protected override void onEnabled()
