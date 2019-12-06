@@ -33,17 +33,34 @@ abstract public class AwkObject : MonoBehaviour
 
     setupLate();
 
-    enabled = true;
+    yield return null;
+
+    onEnabled();
+
+    yield return null;
+
+    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() == gameObject.scene)
+    {
+      setupDebug();
+    }
   }
 
-  virtual public void setupEarly()
+  virtual protected void setupDebug()
   { }
 
-  virtual public void setup()
+  virtual protected void setupEarly()
   { }
 
-  virtual public void setupLate()
+  virtual protected void setup()
   { }
+
+  virtual protected void setupLate()
+  { }
+
+  virtual protected void onEnabled()
+  {
+    enabled = true;
+  }
 
   virtual public void reboot()
   { }
