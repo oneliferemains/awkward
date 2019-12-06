@@ -16,9 +16,12 @@ public class AwkVrObject : AwkObject
     base.setupEarly();
 
     ovrManager = GameObject.FindObjectOfType<OVRManager>();
-    ovrCamera = ovrManager.GetComponentInChildren<Camera>();
-
-    if (ovrCamera != null) rigTr = ovrCamera.transform;
+    if(ovrManager != null)
+    {
+      ovrCamera = ovrManager.GetComponentInChildren<Camera>();
+      if (ovrCamera != null) rigTr = ovrCamera.transform;
+    }
+    
     rig = GameObject.FindObjectOfType<LineRigController>();
   }
 
