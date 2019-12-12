@@ -16,13 +16,19 @@ public class AwkVrObject : AwkObject
     base.setupEarly();
 
     ovrManager = GameObject.FindObjectOfType<OVRManager>();
+    //Debug.Assert(ovrManager);
+    //Debug.Log(ovrManager);
     if(ovrManager != null)
     {
       ovrCamera = ovrManager.GetComponentInChildren<Camera>();
       if (ovrCamera != null) rigTr = ovrCamera.transform;
     }
+
+    Debug.Assert(rigTr);
     
     rig = GameObject.FindObjectOfType<LineRigController>();
+
+    Debug.Log(name + " " + rig + " " + rigTr);
   }
 
   protected override void onEnabled()

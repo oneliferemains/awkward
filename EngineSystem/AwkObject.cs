@@ -23,6 +23,10 @@ abstract public class AwkObject : MonoBehaviour
   {
     enabled = false;
 
+    //RuntimeInitializeOnLoadMethod
+    yield return null;
+    yield return null;
+
     setupEarly();
 
     yield return null;
@@ -83,6 +87,14 @@ abstract public class AwkObject : MonoBehaviour
   {
     return enabled;
   }
+
+  private void OnDestroy()
+  {
+    destroy();
+  }
+
+  virtual protected void destroy()
+  { }
 
   virtual protected string getStamp()
   {
