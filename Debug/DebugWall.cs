@@ -19,8 +19,10 @@ public class DebugWall : AwkObject
 
   public TextMesh txtLogs;
   public TextMesh txtDynamics;
+  public TextMesh txtInputs;
 
-  int lastFrame = 0;
+  int lastFrameInputs = 0;
+  int lastFrameDynamics = 0;
 
   protected override void build()
   {
@@ -39,18 +41,30 @@ public class DebugWall : AwkObject
   public void addLog(string log)
   {
     txtLogs.text += "\n"+Time.frameCount+"|"+log;
+    //Debug.Log(log);
   }
 
   public void addDyna(string ct)
   {
     //clear last frame
-    if(lastFrame != Time.frameCount)
+    if(lastFrameDynamics != Time.frameCount)
     {
       txtDynamics.text = "";
-      lastFrame = Time.frameCount;
+      lastFrameDynamics = Time.frameCount;
     }
 
     txtDynamics.text += "\n"+ct;
+  }
+
+  public void addInputs(string ct)
+  {
+    if (lastFrameInputs != Time.frameCount)
+    {
+      txtInputs.text = "";
+      lastFrameInputs = Time.frameCount;
+    }
+
+    txtInputs.text += "\n" + ct;
   }
   
 }

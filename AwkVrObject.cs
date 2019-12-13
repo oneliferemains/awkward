@@ -28,7 +28,7 @@ public class AwkVrObject : AwkObject
     
     rig = GameObject.FindObjectOfType<LineRigController>();
 
-    Debug.Log(name + " " + rig + " " + rigTr);
+    //Debug.Log(name + " " + rig + " " + rigTr);
   }
 
   protected override void onEnabled()
