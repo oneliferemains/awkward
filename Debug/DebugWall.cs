@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugWall : AwkObject
+/// <summary>
+/// created by default and hidden
+/// </summary>
+public class DebugWall : AwkVrObject
 {
   static public DebugWall instance;
 
@@ -29,6 +32,8 @@ public class DebugWall : AwkObject
     base.build();
 
     instance = this;
+
+    hide();
   }
 
   protected override void setup()
@@ -36,6 +41,8 @@ public class DebugWall : AwkObject
     base.setup();
 
     addLog(VersionManager.getFormatedVersion());
+
+    //rig.getButton()
   }
 
   public void addLog(string log)
@@ -67,4 +74,25 @@ public class DebugWall : AwkObject
     txtInputs.text += "\n" + ct;
   }
   
+
+  void show()
+  {
+    txtLogs.gameObject.SetActive(true);
+    txtDynamics.gameObject.SetActive(true);
+    txtInputs.gameObject.SetActive(true);
+  }
+
+  void hide()
+  {
+    txtLogs.gameObject.SetActive(false);
+    txtDynamics.gameObject.SetActive(false);
+    txtInputs.gameObject.SetActive(false);
+  }
+
+  public void toggle()
+  {
+    Debug.Log("debug, toggling wall debug");
+    if (txtLogs.gameObject.activeSelf) hide();
+    else show();
+  }
 }
