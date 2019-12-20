@@ -27,6 +27,8 @@ public class DebugWall : AwkVrObject
   int lastFrameInputs = 0;
   int lastFrameDynamics = 0;
 
+  Vector2 rsBuffer;
+
   protected override void build()
   {
     base.build();
@@ -42,7 +44,25 @@ public class DebugWall : AwkVrObject
 
     addLog(VersionManager.getFormatedVersion());
 
+    if(rig != null)
+    {
+      rig.onRightStick += onRStick;
+    }
+
     //rig.getButton()
+  }
+
+  void onRStick(Vector2 motion)
+  {
+
+    Debug.Log(motion+" vs "+rsBuffer);
+
+    if (DebugWall.instance != null)
+    {
+      if (motion.y > 0.5f && rsBuffer.y < 0.5f) DebugWall.instance.toggle();
+    }
+
+    rsBuffer = motion;
   }
 
   public void addLog(string log)
