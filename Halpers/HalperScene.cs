@@ -50,12 +50,7 @@ static public class HalperScene {
   {
     return sc == SceneManager.GetActiveScene();
   }
-
-  static public void loadScene(string sceneName)
-  {
-
-  }
-
+  
   static public Scene getSceneFromAdded(string sceneName)
   {
     for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -126,6 +121,18 @@ static public class HalperScene {
     else return scenes;
 
   }// getAllBuildScenesNames()
+
+  static public string[] getEditorBuildSettingsScenePathList()
+  {
+    List<string> tmp = new List<string>();
+    UnityEditor.EditorBuildSettingsScene[] scenes = UnityEditor.EditorBuildSettings.scenes;
+    foreach (UnityEditor.EditorBuildSettingsScene sc in scenes)
+    {
+      //Debug.Log(sc.path);
+      tmp.Add(sc.path);
+    }
+    return tmp.ToArray();
+  }
 
 #endif
 
