@@ -20,7 +20,7 @@ public class AwkVrObject : AwkObject
     //Debug.Log(ovrManager);
     if(ovrManager != null)
     {
-      ovrCamera = ovrManager.GetComponentInChildren<Camera>();
+      ovrCamera = ovrManager.transform.Find("TrackingSpace/CenterEyeAnchor").GetComponentInChildren<Camera>();
       if (ovrCamera != null) rigTr = ovrCamera.transform;
     }
 
