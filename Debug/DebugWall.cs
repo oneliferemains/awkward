@@ -9,17 +9,7 @@ using UnityEngine.UI;
 public class DebugWall : AwkVrObject
 {
   static public DebugWall instance;
-
-  [RuntimeInitializeOnLoadMethod]
-  static public void create()
-  {
-    DebugWall tmp = GameObject.FindObjectOfType<DebugWall>();
-    if (tmp == null)
-    {
-      GameObject.Instantiate(Resources.Load("debug-wall"));
-    }
-  }
-
+  
   public TextMesh txtLogs;
   public TextMesh txtDynamics;
   public TextMesh txtInputs;
