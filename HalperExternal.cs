@@ -104,4 +104,34 @@ static public class HalperExternal
 
     return false; // no need
   }
+
+
+  public static void removeAllFilesOfAType(string pathToFolder, string extension)
+  {
+    if (!Directory.Exists(pathToFolder))
+    {
+      Debug.LogError(pathToFolder + " doesn't exists ?");
+      return;
+    }
+
+    Debug.Log("<b>removing files</b> of extension " + extension + " in folder " + pathToFolder);
+
+    int count = 0;
+    string[] files = Directory.GetFiles(pathToFolder);
+    for (int i = 0; i < files.Length; i++)
+    {
+      if (File.Exists(files[i]))
+      {
+        if (files[i].EndsWith(extension))
+        {
+          File.Delete(files[i]);
+          //Debug.Log("  L removed " + files[i]);
+          count++;
+        }
+      }
+    }
+
+    Debug.Log("completed ! removed " + count + " files with extension " + extension);
+  }
+
 }

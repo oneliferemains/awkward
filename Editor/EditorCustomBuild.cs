@@ -23,40 +23,47 @@ public class EditorCustomBuild
   [MenuItem("Build/Mac Dev Build With External")]
   public static void BuildMacDevGame()
   {
-    BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer, BuildTarget.StandaloneOSX);
+    BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer, getMacOsBuildTarget());
   }
 
   static void BuildGame(BuildOptions buildOptions, BuildTarget targetPlatform = BuildTarget.StandaloneWindows)
   {
-    // executable
-    string buildFolder = "Assets/../Build";
-    if (!Directory.Exists(buildFolder))
-    {
-      UnityEngine.Debug.Log("Creating directory " + buildFolder);
-      Directory.CreateDirectory(buildFolder);
-    }
+    float startTime = Time.time;
+    Debug.Log("started build process");
 
+    string buildFolder = generateBuildsFolder();
+
+    // generate build name
     string buildName = PlayerSettings.productName;
     if ((buildOptions & BuildOptions.Development) == BuildOptions.Development) buildName += "_dev";
     else buildName += "_release";
     buildName += "_" + VersionManager.getFormatedVersion();
 
+    Debug.Log("  L <b>build name</b> : "+buildName);
+
+    // generate the output build's folder
     buildFolder += "/" + buildName;
     if (!Directory.Exists(buildFolder))
     {
-      UnityEngine.Debug.Log("Creating directory " + buildFolder);
+      UnityEngine.Debug.Log("  ... creating directory " + buildFolder);
       Directory.CreateDirectory(buildFolder);
     }
 
+    Debug.Log("  L <b>output folder created</b> : "+buildFolder);
+
     BuildPlayerOptions options = new BuildPlayerOptions();
 
-    // editor build scenes list
+    // use all editor build scenes list
     options.scenes = getScenePaths();
+
+    Debug.Log("  L building with <b>"+options.scenes.Length+"</b> scenes from editor settings");
 
     options.target = targetPlatform;
 
+    Debug.Log("  L target platform is <b>"+options.target+"</b>");
+
     // path
-    if(targetPlatform == BuildTarget.StandaloneOSX)
+    if (targetPlatform == getMacOsBuildTarget())
     {
       buildFolder += "_osx";
       options.locationPathName = buildFolder + "/" + buildName + ".app";
@@ -64,32 +71,41 @@ public class EditorCustomBuild
     {
       options.locationPathName = buildFolder + "/" + buildName + ".exe";
     }
-    
+
+    Debug.Log("  L path is <b>" + options.locationPathName+ "</b>");
+
     // flags (dev build)
     options.options = buildOptions;
 
-    UnityEngine.Debug.Log(options.locationPathName);
+    Debug.Log("  L now <b>building app</b> ...");
 
     BuildPipeline.BuildPlayer(options);
 
-    
+    Debug.Log("  L app building success !");
+
 
     // externals
     FileUtil.DeleteFileOrDirectory(buildFolder + "/external/");
+
     string externalPath = HalperExternal.GetExternalFolder();
+    string externalOutputPath = buildFolder + "/external";
 
     //externalPath = externalPath.Replace("/", "\\");
 
-    Debug.Log("now copying external folder : "+externalPath);
+    Debug.Log("  L now <b>copying external folder</b> : " + externalPath);
 
-    if (System.IO.Directory.Exists(externalPath))
+    if (Directory.Exists(externalPath))
     {
-      FileUtil.CopyFileOrDirectory(externalPath, buildFolder + "/external");
+      FileUtil.CopyFileOrDirectory(externalPath, externalOutputPath);
     }
     else
     {
       Debug.LogWarning("folder "+externalPath+" doesn't exist ? can't copy it");
     }
+
+    HalperExternal.removeAllFilesOfAType(externalOutputPath, "meta");
+
+    Debug.Log("build process <color=green>completed</color>");
   }
 
 
@@ -112,4 +128,47 @@ public class EditorCustomBuild
     return sceneNames.ToArray();
   }
 
+  static protected BuildTarget getMacOsBuildTarget()
+  {
+
+#if UNITY_2017_1_OR_NEWER
+    return BuildTarget.StandaloneOSX;
+#else
+    return BuildTarget.StandaloneOSXIntel64; // always intel ?
+#endif
+
+  }
+
+
+  [MenuItem("Build/Open builds folder")]
+  static protected void openBuildsFolder()
+  {
+    generateBuildsFolder();
+    EditorContextMenu.startCmd(getBuildsFolderPath());
+  }
+
+  static protected string getBuildsFolderPath()
+  {
+    string buildFolder = Application.dataPath; // path/to/Assets
+    buildFolder = buildFolder.Substring(0, buildFolder.LastIndexOf('/')); // "/Assets" from path
+    buildFolder += "/Build";
+
+    return buildFolder;
+  }
+
+  static protected string generateBuildsFolder()
+  {
+    string buildFolderPath = getBuildsFolderPath();
+
+    // create the root Build/ folder of not present
+    if (!Directory.Exists(buildFolderPath))
+    {
+      Debug.Log("  ... creating directory " + buildFolderPath);
+      Directory.CreateDirectory(buildFolderPath);
+    }
+
+    //Debug.Log("  L root build folder created");
+
+    return buildFolderPath;
+  }
 }

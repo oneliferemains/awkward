@@ -5,7 +5,7 @@ using UnityEngine;
 public class DebugWallSetuper : MonoBehaviour
 {
 
-  private void Start()
+  private void Awake()
   {
     create();
   }
