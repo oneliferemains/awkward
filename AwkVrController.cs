@@ -16,8 +16,8 @@ public class AwkVrController : AwkVrObject
     }
   }
 
-  public LineHandControl hand_left;
-  public LineHandControl hand_right;
+  public AwkVrControllerHand hand_left;
+  public AwkVrControllerHand hand_right;
 
   List<VRTriggerWrapper> triggers = new List<VRTriggerWrapper>();
   List<VRButtonWrapper> buttons = new List<VRButtonWrapper>();
