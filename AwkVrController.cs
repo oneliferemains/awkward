@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Object = UnityEngine.Object;
 
 public class AwkVrController : AwkVrObject
 {
@@ -12,7 +13,12 @@ public class AwkVrController : AwkVrObject
     AwkVrController lrc = GameObject.FindObjectOfType<AwkVrController>();
     if (lrc == null)
     {
-      GameObject.Instantiate(Resources.Load("rig"));
+      Debug.LogWarning("missing rig ? creating one from resource folder ...");
+
+      Object obj = Resources.Load("rig");
+      Debug.Assert(obj != null, "nope, can't create rig");
+
+      if(obj != null) GameObject.Instantiate(obj);
     }
   }
 
@@ -57,11 +63,8 @@ public class AwkVrController : AwkVrObject
   protected override void setupVr()
   {
     base.setupVr();
-
-    if (DebugWall.instance != null)
-    {
-      DebugWall.instance.addLog("VR rig moved : " + rigTr.position);
-    }
+    
+    DebugWall.instance?.addLog("VR rig moved : " + rigTr.position);
   }
 
   protected override void update()
@@ -70,7 +73,7 @@ public class AwkVrController : AwkVrObject
 
     //OVRInput.Update();
 
-    DebugWall.instance.addDyna("rig ? " + rigTr.position);
+    DebugWall.instance?.addDyna("rig ? " + rigTr.position);
 
     //OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger);
 
@@ -375,7 +378,7 @@ public class VRButtonWrapper : VrInputWrapper
 
   public void update(bool state)
   {
-    DebugWall.instance.addInputs(controller.ToString() + " | (" + button.ToString() + ") | " + state);
+    DebugWall.instance?.addInputs(controller.ToString() + " | (" + button.ToString() + ") | " + state);
 
     if (state != _state)
     {

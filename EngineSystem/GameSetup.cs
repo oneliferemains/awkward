@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSetup : MonoBehaviour
+/// <summary>
+/// something else must call feeds()
+/// </summary>
+
+abstract public class GameSetup : MonoBehaviour
 {
   bool _ready = false;
 
@@ -10,7 +14,6 @@ public class GameSetup : MonoBehaviour
   {
     _ready = false;
 
-    //insert more stuff here
     yield return null;
     
     _ready = true;
@@ -24,7 +27,7 @@ public class GameSetup : MonoBehaviour
     
     reboot();
   }
-
+  
   private void Update()
   {
     if (Input.GetKeyUp(KeyCode.Backspace)) Application.Quit();
@@ -34,7 +37,7 @@ public class GameSetup : MonoBehaviour
 
   public void reboot()
   {
-    Debug.Log("<b>REBOOT</b>");
+    Debug.Log(GetType()+" <b>REBOOT</b>");
 
     AwkObject[] bos = GameObject.FindObjectsOfType<AwkObject>();
     foreach(AwkObject bo in bos)

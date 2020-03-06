@@ -23,6 +23,16 @@ abstract public class AwkObject : MonoBehaviour
   {
     enabled = false;
 
+    yield return null;
+
+    //insert more stuff here
+    EngineLoaderFeederBase[] feeders = GameObject.FindObjectsOfType<EngineLoaderFeederBase>();
+    while (feeders.Length > 0)
+    {
+      feeders = GameObject.FindObjectsOfType<EngineLoaderFeederBase>();
+      yield return null;
+    }
+
     //RuntimeInitializeOnLoadMethod
     yield return null;
     yield return null;

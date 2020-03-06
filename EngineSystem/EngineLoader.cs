@@ -19,6 +19,25 @@ public class EngineLoader : MonoBehaviour
   
   public const string prefixResource = "resource-";
 
+  /*
+  [RuntimeInitializeOnLoadMethod]
+  static protected void onStartup()
+  {
+    
+    EngineLoaderFeederBase[] feeders = GameObject.FindObjectsOfType<EngineLoaderFeederBase>();
+    if(feeders.Length > 0)
+    {
+      Debug.Log("EngineLoader found " + feeders.Length + " feeders");
+
+      for (int i = 0; i < feeders.Length; i++)
+      {
+        feeders[i].feed();
+      }
+    }
+
+  }
+  */
+
   private void Awake()
   {
     //Debug.Log(EngineObject.getStamp(this) + " created");

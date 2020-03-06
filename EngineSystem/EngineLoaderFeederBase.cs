@@ -15,8 +15,8 @@ public class EngineLoaderFeederBase : MonoBehaviour
   /// </summary>
   public void feed()
   {
-    //Debug.Log(EngineObject.getStamp(this)+" feed", transform);
-    
+    Debug.Log(GetType() + " feed "+name, transform);
+
     string[] nms = solveNames();
 
     //Debug.Log(EngineObject.getStamp(this) + " now feeding "+nms.Length+" names", transform);
