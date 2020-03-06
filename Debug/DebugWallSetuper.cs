@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// make sure there is a debug wall
+/// </summary>
+
 public class DebugWallSetuper : MonoBehaviour
 {
 

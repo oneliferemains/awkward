@@ -44,7 +44,6 @@ public class DebugWall : AwkVrObject
 
   void onRStick(Vector2 motion)
   {
-
     Debug.Log(motion+" vs "+rsBuffer);
 
     if (DebugWall.instance != null)
@@ -55,10 +54,12 @@ public class DebugWall : AwkVrObject
     rsBuffer = motion;
   }
 
-  public void addLog(string log)
+  public void addLog(string log, bool showOnNewLogs = false)
   {
     txtLogs.text += "\n"+Time.frameCount+"|"+log;
-    //Debug.Log(log);
+    Debug.Log(log);
+
+    if (showOnNewLogs) show();
   }
 
   public void addDyna(string ct)
