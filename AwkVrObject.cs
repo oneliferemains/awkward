@@ -8,7 +8,7 @@ public class AwkVrObject : AwkObject
   protected OVRManager ovrManager;
   protected Camera ovrCamera;
 
-  protected LineRigController rig;
+  protected AwkVrController rig;
   protected Transform rigTr;
 
   protected override void setupEarly()
@@ -26,7 +26,7 @@ public class AwkVrObject : AwkObject
 
     Debug.Assert(rigTr);
     
-    rig = GameObject.FindObjectOfType<LineRigController>();
+    rig = GameObject.FindObjectOfType<AwkVrController>();
 
     //Debug.Log(name + " " + rig + " " + rigTr);
   }
