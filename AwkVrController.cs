@@ -135,9 +135,14 @@ public class AwkVrController : AwkVrObject
 
     editorUpdateHandPosition(); // place transform to mouse cursor
 
+
+    //can't update each frame , another update is called linked to key later one
+    //getButton(inputActiveController, OVRInput.Button.One).update(Input.GetMouseButton(0));
+
     if (Input.GetMouseButton(0))
     {
       getTrigger(inputActiveController, OVRInput.Axis1D.PrimaryIndexTrigger).update(1f);
+      //getButton(inputActiveController, OVRInput.Button.One).update(Input.GetMouseButton(0));
     }
     else if (Input.GetMouseButtonUp(0))
     {
@@ -383,14 +388,11 @@ public class VRButtonWrapper : VrInputWrapper
     if (state != _state)
     {
       _state = state;
-      if (_state)
-      {
-        if (onPress != null) onPress();
-      }
-      else
-      {
-        if (onRelease != null) onRelease();
-      }
+
+      //Debug.Log(this.controller+" ; "+this.button+" => "+ _state);
+
+      if (_state && onPress != null) onPress();
+      else if(!_state && onRelease != null) onRelease();
 
       //if (onStateChange != null) onStateChange(_state, controller == OVRInput.Controller.LTouch ? lrc.hand_left.handTr : lrc.hand_right.handTr);
     }
@@ -406,6 +408,8 @@ public class VRButtonWrapper : VrInputWrapper
 
   public bool isButton(OVRInput.Controller controller, OVRInput.Button button)
   {
+    //Debug.Log(controller + "," + button + " vs " + this.controller+", "+ this.button);
+
     if (!isController(controller)) return false;
     return this.button == button;
   }

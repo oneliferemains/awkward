@@ -6,6 +6,7 @@ public class AwkVrControllerHand : AwkObject
 {
   public OVRInput.Controller hand = OVRInput.Controller.LTouch;
 
+  [HideInInspector]
   public Transform handAnchor;
 
   protected override void setup()
@@ -15,10 +16,20 @@ public class AwkVrControllerHand : AwkObject
     if(hand == OVRInput.Controller.LTouch)
     {
       handAnchor = GameObject.Find("LeftHandAnchor").transform;
-    }else if(hand == OVRInput.Controller.RTouch)
+    }
+    else if(hand == OVRInput.Controller.RTouch)
     {
       handAnchor = GameObject.Find("RightHandAnchor").transform;
     }
+  }
+
+  protected override void update()
+  {
+    base.update();
+
+    //sync
+    transform.position = handAnchor.position;
+    transform.rotation = handAnchor.rotation;
   }
 
   public bool checkProxy(Vector3 position, float dst)
