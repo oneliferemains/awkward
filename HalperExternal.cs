@@ -110,7 +110,7 @@ static public class HalperExternal
   {
     if (!Directory.Exists(pathToFolder))
     {
-      Debug.LogError(pathToFolder + " doesn't exists ?");
+      Debug.LogWarning("trying to remove all files of extension : "+extension+" at path : "+pathToFolder + " but path doesn't exists ?");
       return;
     }
 
