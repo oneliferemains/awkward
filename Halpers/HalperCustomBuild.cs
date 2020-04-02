@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 public class HalperCustomBuild
 {
+  /// <summary>
+  /// external, no /
+  /// </summary>
   static public string getExternalFolderName() => "external";
 
   /// <summary>

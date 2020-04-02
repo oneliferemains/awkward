@@ -85,10 +85,10 @@ public class EditorCustomBuild
 
 
     // externals
-    FileUtil.DeleteFileOrDirectory(buildFolder + "/external/");
+    FileUtil.DeleteFileOrDirectory(buildFolder + "/"+HalperCustomBuild.getExternalFolderName()+"/");
 
     string externalPath = HalperExternal.GetExternalFolder();
-    string externalOutputPath = buildFolder + "/external";
+    string externalOutputPath = buildFolder + "/"+ HalperCustomBuild.getExternalFolderName();
 
     //externalPath = externalPath.Replace("/", "\\");
 
