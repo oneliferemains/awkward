@@ -23,7 +23,17 @@ public class HalperEditor {
   }
 
 #if UNITY_EDITOR
-
+  static public void editorCenterCameraToObject(GameObject obj)
+  {
+    GameObject tmp = UnityEditor.Selection.activeGameObject;
+    UnityEditor.Selection.activeGameObject = obj;
+    if (UnityEditor.SceneView.lastActiveSceneView != null)
+    {
+      UnityEditor.SceneView.lastActiveSceneView.FrameSelected();
+    }
+    if (tmp != null) UnityEditor.Selection.activeGameObject = tmp;
+  }
+  
   [MenuItem("Tools/Clear console #&c")]
   public static void ClearConsole()
   {
@@ -64,20 +74,6 @@ public class HalperEditor {
     return instance;
   }
   
-  static public void editorCenterCameraToObject(GameObject obj)
-  {
-    GameObject tmp = Selection.activeGameObject;
-
-    Selection.activeGameObject = obj;
-
-    if (SceneView.lastActiveSceneView != null)
-    {
-      SceneView.lastActiveSceneView.FrameSelected();
-    }
-
-    if (tmp != null) Selection.activeGameObject = tmp;
-  }
-
 
   /// <summary>
   /// get the sorting layer names<para/>
