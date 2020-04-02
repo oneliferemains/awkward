@@ -6,6 +6,7 @@ using Object = UnityEngine.Object;
 
 public class AwkVrController : AwkVrObject
 {
+#if vr
 
   [RuntimeInitializeOnLoadMethod]
   static protected void create()
@@ -413,4 +414,6 @@ public class VRButtonWrapper : VrInputWrapper
     if (!isController(controller)) return false;
     return this.button == button;
   }
+
+#endif
 }

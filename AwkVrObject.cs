@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AwkVrObject : AwkObject
 {
-  
+#if vr
   protected OVRManager ovrManager;
   protected Camera ovrCamera;
 
@@ -70,4 +70,6 @@ public class AwkVrObject : AwkObject
   {
     enabled = true;
   }
+
+#endif
 }

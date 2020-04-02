@@ -49,5 +49,11 @@ static public class EditorContextMenu {
     Process.Start(startInfo);
 
   }
-  
+
+  [MenuItem("Tools/open persistant data path")]
+  static public void osOpenDataPathFolder()
+  {
+    HalperNatives.os_openFolder(HalperNatives.getDataPath());
+  }
+
 }

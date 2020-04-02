@@ -34,10 +34,12 @@ public class DebugWall : AwkVrObject
 
     addLog(VersionManager.getFormatedVersion());
 
+#if vr
     if(rig != null)
     {
       rig.onRightStick += onRStick;
     }
+#endif
 
     //rig.getButton()
   }

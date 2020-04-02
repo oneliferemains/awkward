@@ -7,9 +7,40 @@ using UnityEditor;
 using System.Reflection;
 #endif
 
+/// <summary>
+/// % = ctrl
+/// # = shit
+/// & = alt
+/// </summary>
+
 public class HalperEditor {
 
+  [MenuItem("Tools/Clear pprefs")]
+  public static void ClearPprefs()
+  {
+    PlayerPrefs.DeleteAll();
+    PlayerPrefs.Save();
+  }
+
 #if UNITY_EDITOR
+
+  [MenuItem("Tools/Clear console #&c")]
+  public static void ClearConsole()
+  {
+    var assembly = Assembly.GetAssembly(typeof(SceneView));
+    var type = assembly.GetType("UnityEditor.LogEntries");
+    var method = type.GetMethod("Clear");
+    method.Invoke(new object(), null);
+  }
+
+  [MenuItem("Tools/pause %#&w")]
+  public static void PauseEditor()
+  {
+    Debug.Log("PAUSE EDITOR");
+    Debug.Break();
+    //UnityEditor.EditorApplication.isPlaying = false;
+
+  }
 
   static public T editor_draw_selectObject<T>(T instance = null, string overrideSelectLabel = "") where T : Component
   {

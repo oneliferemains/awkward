@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AwkVrControllerHand : AwkObject
 {
+#if vr
   public OVRInput.Controller hand = OVRInput.Controller.LTouch;
 
   [HideInInspector]
@@ -58,4 +59,6 @@ public class AwkVrControllerHand : AwkObject
     }
 
   }
+
+#endif
 }
