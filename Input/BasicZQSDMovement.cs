@@ -37,6 +37,7 @@ public class BasicZQSDMovement : MonoBehaviour
 
   void Update()
   {
+#if ENABLE_LEGACY_INPUT_MANAGER
     if (Input.GetKey(KeyCode.Z)) dir.z = 1f;
     else if (Input.GetKey(KeyCode.S)) dir.z = -1f;
     else dir.z = 0f;
@@ -46,5 +47,6 @@ public class BasicZQSDMovement : MonoBehaviour
     else dir.x = 0f;
 
     if (_rigid == null) transform.Translate(dir * speed * Time.deltaTime, Space.Self);
+#endif
   }
 }

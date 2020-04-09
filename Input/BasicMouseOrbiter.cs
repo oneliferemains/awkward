@@ -1,21 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BasicMouseOrbiter : MonoBehaviour
 {
-  float deltaScaleX = 5f;
-  float deltaScaleY = 3f;
-
-  Vector2 _dlt;
+  public float sensivityX = 5f;
+  public float sensivityY = 3f;
 
   float angleX = 0f;
   float angleY = 0f;
 
+  protected Vector2 _dlt;
+
   private void Start()
   {
-
+#if ENABLE_LEGACY_INPUT_MANAGER
     _dlt = Input.mousePosition;
+#endif
+
+    //_dlt = Mouse.current.position;
+
+    angleX = transform.eulerAngles.y;
+    angleY = transform.localEulerAngles.x;
 
     lockMouse();
   }
@@ -27,29 +34,44 @@ public class BasicMouseOrbiter : MonoBehaviour
     Cursor.visible = false;
   }
 
-  void Update()
+  virtual protected Vector2 solveDelta()
   {
+    Vector2 output = (Vector2)Input.mousePosition - _dlt;
+    return output;
+  }
 
-    if(Input.GetMouseButtonDown(0))
+  void manageCursorLocking()
+  {
+#if ENABLE_LEGACY_INPUT_MANAGER
+    if (Input.GetMouseButtonDown(0))
     {
       lockMouse();
     }
 
-    if(Input.GetKeyUp(KeyCode.Escape))
+    if (Input.GetKeyUp(KeyCode.Escape))
     {
       Cursor.lockState = CursorLockMode.None;
       Cursor.visible = true;
     }
+#endif
+  }
 
-    Vector2 mPos = Input.mousePosition;
-    Vector2 dlt = mPos - _dlt;
+  void Update()
+  {
+    manageCursorLocking();
+
+    Vector2 dlt = solveDelta();
+
+    //Debug.Log(dlt);
+
+    if (dlt.sqrMagnitude == 0f) return;
 
     //Debug.Log(dlt);
 
     Vector2 solvedDelta;
     
-    solvedDelta.x = dlt.x * deltaScaleX;
-    solvedDelta.y = dlt.y * deltaScaleY;
+    solvedDelta.x = dlt.x * sensivityX;
+    solvedDelta.y = dlt.y * sensivityY;
 
     if (solvedDelta.sqrMagnitude > 0.01f)
     {
@@ -82,6 +104,7 @@ public class BasicMouseOrbiter : MonoBehaviour
       //transform.Rotate(Vector2.right * -solvedDelta.y, Space.Self);
     }
 
-    _dlt = mPos; // buff
+    _dlt = dlt; // buff for next frame
   }
+
 }
