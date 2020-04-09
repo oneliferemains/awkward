@@ -29,8 +29,7 @@ public class BasicMouseOrbiter : MonoBehaviour
 
   void lockMouse()
   {
-
-    Cursor.lockState = CursorLockMode.Confined;
+    Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
   }
 
@@ -48,11 +47,15 @@ public class BasicMouseOrbiter : MonoBehaviour
       lockMouse();
     }
 
-    if (Input.GetKeyUp(KeyCode.Escape))
+    if(Application.isEditor)
     {
-      Cursor.lockState = CursorLockMode.None;
-      Cursor.visible = true;
+      if (Input.GetKeyUp(KeyCode.Escape))
+      {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+      }
     }
+    
 #endif
   }
 
