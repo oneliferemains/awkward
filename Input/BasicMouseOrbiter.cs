@@ -24,13 +24,7 @@ public class BasicMouseOrbiter : MonoBehaviour
     angleX = transform.eulerAngles.y;
     angleY = transform.localEulerAngles.x;
 
-    lockMouse();
-  }
-
-  void lockMouse()
-  {
-    Cursor.lockState = CursorLockMode.Locked;
-    Cursor.visible = false;
+    MouseLocker.lockMouse();
   }
 
   virtual protected Vector2 solveDelta()
@@ -39,29 +33,9 @@ public class BasicMouseOrbiter : MonoBehaviour
     return output;
   }
 
-  void manageCursorLocking()
-  {
-#if ENABLE_LEGACY_INPUT_MANAGER
-    if (Input.GetMouseButtonDown(0))
-    {
-      lockMouse();
-    }
-
-    if(Application.isEditor)
-    {
-      if (Input.GetKeyUp(KeyCode.Escape))
-      {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-      }
-    }
-    
-#endif
-  }
-
   void Update()
   {
-    manageCursorLocking();
+    MouseLocker.updateCursorLocking();
 
     Vector2 dlt = solveDelta();
 
