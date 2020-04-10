@@ -11,13 +11,13 @@ public class EditorCustomBuild
   [MenuItem("Build/Windows Release Build With External")]
   public static void BuildReleaseGame()
   {
-    BuildGame(BuildOptions.ShowBuiltPlayer);
+    BuildGame(BuildOptions.ShowBuiltPlayer, BuildTarget.StandaloneWindows);
   }
 
   [MenuItem("Build/Windows Dev Build With External")]
   public static void BuildDevGame()
   {
-    BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer);
+    BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer, BuildTarget.StandaloneWindows);
   }
 
   [MenuItem("Build/Mac Dev Build With External")]
@@ -26,7 +26,7 @@ public class EditorCustomBuild
     BuildGame(BuildOptions.Development | BuildOptions.ShowBuiltPlayer, getMacOsBuildTarget());
   }
 
-  static void BuildGame(BuildOptions buildOptions, BuildTarget targetPlatform = BuildTarget.StandaloneWindows)
+  static public void BuildGame(BuildOptions buildOptions, BuildTarget targetPlatform = BuildTarget.StandaloneWindows, bool auto_run = false, string prefix = "")
   {
     float startTime = Time.time;
     Debug.Log("started build process");
@@ -74,6 +74,14 @@ public class EditorCustomBuild
 
     Debug.Log("  L path is <b>" + options.locationPathName+ "</b>");
 
+    if (auto_run)
+    {
+      options.options |= BuildOptions.AutoRunPlayer;
+
+      Debug.Log("  L build is flagged for <b>autorun</b>");
+
+    }
+
     // flags (dev build)
     options.options = buildOptions;
 
@@ -87,7 +95,7 @@ public class EditorCustomBuild
     // externals
     FileUtil.DeleteFileOrDirectory(buildFolder + "/"+HalperCustomBuild.getExternalFolderName()+"/");
 
-    string externalPath = HalperExternal.GetExternalFolder();
+    string externalPath = HalperExternal.GetExternalFolderName();
     string externalOutputPath = buildFolder + "/"+ HalperCustomBuild.getExternalFolderName();
 
     //externalPath = externalPath.Replace("/", "\\");

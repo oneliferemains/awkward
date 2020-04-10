@@ -8,7 +8,7 @@ static public class HalperExternal
 {
 
 
-	public static string GetExternalFolder()
+	public static string GetExternalFolderName()
   {
 #if UNITY_EDITOR
     return Application.dataPath + "/external/";
@@ -23,7 +23,7 @@ static public class HalperExternal
 
   static string generatePath(string profil, string file, string ext = "txt")
   {
-    string path = GetExternalFolder(); // default
+    string path = GetExternalFolderName(); // default
     if (profil.Length > 0) path = generatePath(profil); // override default
 
     path += file + "." + ext; // add file
@@ -32,7 +32,7 @@ static public class HalperExternal
   }
   static string generatePath(string profil)
   {
-    return GetExternalFolder() + "/" + profil + "/";
+    return GetExternalFolderName() + "/" + profil + "/";
   }
 
   public static string load(string profil, string file)

@@ -41,7 +41,7 @@ public class ConfigFile
   /* retourne l'index de la ligne de la cat */
   public int checkForCategory(string cat)
   {
-    string path = HalperExternal.GetExternalFolder() + filePath;
+    string path = HalperExternal.GetExternalFolderName() + filePath;
     if (!File.Exists(path)) Debug.LogWarning("{ConfigFile} didn't find config file at path " + path);
     else
     {
@@ -71,7 +71,7 @@ public class ConfigFile
   }
 
   public void removeLines(string label) {
-    string path = HalperExternal.GetExternalFolder() + filePath;
+    string path = HalperExternal.GetExternalFolderName() + filePath;
     if (!File.Exists(path)) Debug.LogWarning("{ConfigFile} didn't find config file at path " + path);
     else {
       string[] lines = File.ReadAllLines(path);
@@ -94,7 +94,7 @@ public class ConfigFile
 
   public void writeRange(string categ, string name, Vector2 v)
   {
-    string path = HalperExternal.GetExternalFolder() + filePath;
+    string path = HalperExternal.GetExternalFolderName() + filePath;
 
     //Debug.Log("{ConfigFile} parsing config file : "+path);
 
@@ -149,7 +149,7 @@ public class ConfigFile
 
   public void writeVector3Array(string categ, string name, Vector3[] v)
   {
-    string path = HalperExternal.GetExternalFolder() + filePath;
+    string path = HalperExternal.GetExternalFolderName() + filePath;
 
     //Debug.Log("{ConfigFile} parsing config file : "+path);
 
@@ -213,7 +213,7 @@ public class ConfigFile
 
   void parseFile(string filename)
   {
-    string path = HalperExternal.GetExternalFolder() + filename;
+    string path = HalperExternal.GetExternalFolderName() + filename;
 
     //Debug.Log("{ConfigFile} parsing config file : "+path);
 
