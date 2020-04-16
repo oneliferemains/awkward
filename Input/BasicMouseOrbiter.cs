@@ -13,8 +13,18 @@ public class BasicMouseOrbiter : MonoBehaviour
 
   protected Vector2 _dlt;
 
-  private void Start()
+  IEnumerator Start()
   {
+    enabled = false;
+
+    //must wait a few frame before tracking mouse mouvement
+    //so that camera is straight when starting
+    yield return null;
+    yield return null;
+    yield return null;
+    yield return null;
+    yield return null;
+
 #if ENABLE_LEGACY_INPUT_MANAGER
     _dlt = Input.mousePosition;
 #endif
@@ -25,6 +35,8 @@ public class BasicMouseOrbiter : MonoBehaviour
     angleY = transform.localEulerAngles.x;
 
     MouseLocker.lockMouse();
+
+    enabled = true;
   }
 
   virtual protected Vector2 solveDelta()
