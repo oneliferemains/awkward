@@ -17,6 +17,11 @@ using UnityEditor.SceneManagement;
 [CreateAssetMenu(menuName = "protoss/create DataBuildSettingProfilScenes", order = 100)]
 public class DataBuildSettingProfilScenes : ScriptableObject
 {
+  [Header("overrides")]
+  //public string build_path = "";
+  public string productName = "";
+
+  [Header("scenes")]
   public string[] build_settings_scenes_paths;
 
 #if UNITY_EDITOR
@@ -31,6 +36,8 @@ public class DataBuildSettingProfilScenes : ScriptableObject
     }
 
     EditorBuildSettings.scenes = tmp.ToArray();
+
+    if (productName.Length > 0) PlayerSettings.productName = productName;
   }
 
   [ContextMenu("record")]
