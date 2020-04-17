@@ -9,6 +9,15 @@ public class HalperMath
     return targetMin + (targetMax - targetMin) * ((val - sourceMin) / (sourceMax - sourceMin));
   }
 
+  public static int remapGridIndex(int index, int srcWidth, int srcHeight, int dstWidth, int dstHeight)
+  {
+    int x = index % srcWidth;
+    int dstX = Mathf.FloorToInt( map(x, 0, srcWidth, 0, dstWidth) );
+    int y = Mathf.FloorToInt(index / srcWidth);
+    int dstY = Mathf.FloorToInt( map(y, 0, srcHeight, 0, dstHeight) );
+    return dstX + dstWidth * dstY;
+  }
+
   static public float loop(float val, float min, float max)
   {
     if (val > max) val = max - val;
