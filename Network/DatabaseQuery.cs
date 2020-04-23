@@ -22,7 +22,7 @@ abstract public class DatabaseQuery
     return dbQuery;
   }
 
-  HttpClient http;
+  HttpClient http = null;
 
   abstract public string getDatabaseUrl();
 
@@ -40,4 +40,5 @@ abstract public class DatabaseQuery
     });
     
   }
+
 }
