@@ -117,7 +117,7 @@ public class AwkFpsController : MonoBehaviour
   //controls the locking and unlocking of the mouse
   private void InternalLockUpdate()
   {
-    if (Input.GetKeyUp(KeyCode.Escape))
+    if (Input.GetKeyUp(KeyCode.Escape)) // unlock cursor
     {
       m_cursorIsLocked = false;
     }

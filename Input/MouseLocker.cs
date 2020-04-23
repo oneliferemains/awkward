@@ -15,7 +15,7 @@ public class MouseLocker
 
     if (Application.isEditor)
     {
-      if (Input.GetKeyUp(KeyCode.Escape))
+      if (Input.GetKeyUp(KeyCode.Escape)) // unlock cursor
       {
         unlockMouse();
       }

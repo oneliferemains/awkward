@@ -77,9 +77,10 @@ public class EngineManager : MonoBehaviour
     }
   }
 
+  /*
+  
   private void Update()
   {
-    
     if(Input.GetKeyUp(KeyCode.Delete))
     {
       reboot();
@@ -90,4 +91,6 @@ public class EngineManager : MonoBehaviour
       Application.Quit();
     }
   }
+  
+  */
 }
