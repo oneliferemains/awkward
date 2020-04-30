@@ -32,6 +32,10 @@ public class BasicZQSDMovement : MonoBehaviour
 
     Vector3 vel = _rigid.velocity;
 
+    float friction = 50f;
+    vel.x = Mathf.MoveTowards(vel.x, 0f, Time.deltaTime * friction);
+    vel.z = Mathf.MoveTowards(vel.z, 0f, Time.deltaTime * friction);
+
     if (dir.sqrMagnitude > 0f)
     {
       Vector3 worldDirection = transform.TransformPoint(dir);
