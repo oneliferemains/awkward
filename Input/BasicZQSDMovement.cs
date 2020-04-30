@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicZQSDMovement : MonoBehaviour
 {
-  public bool physic = false;
+  public bool physic = false; // collision
 
   Rigidbody _rigid;
 
@@ -19,17 +19,28 @@ public class BasicZQSDMovement : MonoBehaviour
     {
       _rigid = GetComponent<Rigidbody>();
     }
+
+    setup();
   }
+
+  virtual protected void setup()
+  { }
 
   private void FixedUpdate()
   {
     if (_rigid == null) return;
 
-    Vector3 vel = Vector3.zero;
+    Vector3 vel = _rigid.velocity;
 
-    if(dir.sqrMagnitude > 0f)
+    if (dir.sqrMagnitude > 0f)
     {
-      vel = (transform.TransformPoint(dir) - transform.position).normalized * speed;
+      Vector3 worldDirection = transform.TransformPoint(dir);
+      worldDirection = (worldDirection - _rigid.position).normalized;
+
+      vel.x = worldDirection.x * speed;
+      vel.z = worldDirection.z * speed;
+
+      //vel = (transform.TransformPoint(dir) - transform.position).normalized * speed;
     }
 
     _rigid.velocity = vel;
@@ -37,7 +48,14 @@ public class BasicZQSDMovement : MonoBehaviour
 
   void Update()
   {
-#if ENABLE_LEGACY_INPUT_MANAGER
+    dir = getMotion();
+
+    //no physic
+    if (_rigid == null) transform.Translate(dir * speed * Time.deltaTime, Space.Self);
+  }
+
+  virtual protected Vector3 getMotion()
+  {
     if (Input.GetKey(KeyCode.Z)) dir.z = 1f;
     else if (Input.GetKey(KeyCode.S)) dir.z = -1f;
     else dir.z = 0f;
@@ -46,7 +64,6 @@ public class BasicZQSDMovement : MonoBehaviour
     else if (Input.GetKey(KeyCode.D)) dir.x = 1f;
     else dir.x = 0f;
 
-    if (_rigid == null) transform.Translate(dir * speed * Time.deltaTime, Space.Self);
-#endif
+    return dir;
   }
 }

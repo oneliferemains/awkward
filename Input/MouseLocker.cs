@@ -7,21 +7,16 @@ public class MouseLocker
 
   static public void updateCursorLocking()
   {
-#if ENABLE_LEGACY_INPUT_MANAGER
     if (Input.GetMouseButtonDown(0))
     {
       lockMouse();
     }
 
-    if (Application.isEditor)
+    if (Input.GetKeyUp(KeyCode.Escape)) // unlock cursor
     {
-      if (Input.GetKeyUp(KeyCode.Escape)) // unlock cursor
-      {
-        unlockMouse();
-      }
+      unlockMouse();
     }
 
-#endif
   }
 
   static public void unlockMouse()

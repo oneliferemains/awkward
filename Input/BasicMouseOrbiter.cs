@@ -8,6 +8,9 @@ public class BasicMouseOrbiter : MonoBehaviour
   public float sensivityX = 5f;
   public float sensivityY = 3f;
 
+  public Transform horizontalPivot;
+  public Transform verticalPivot;
+
   float angleX = 0f;
   float angleY = 0f;
 
@@ -36,8 +39,13 @@ public class BasicMouseOrbiter : MonoBehaviour
 
     MouseLocker.lockMouse();
 
+    setup();
+
     enabled = true;
   }
+
+  virtual protected void setup()
+  { }
 
   virtual protected Vector2 solveDelta()
   {
@@ -48,6 +56,9 @@ public class BasicMouseOrbiter : MonoBehaviour
   void Update()
   {
     MouseLocker.updateCursorLocking();
+
+    //no mouvement when not locked
+    if (MouseLocker.isUnlocked()) return;
 
     Vector2 dlt = solveDelta();
 
@@ -72,21 +83,21 @@ public class BasicMouseOrbiter : MonoBehaviour
       {
         angleX += solvedDelta.x; // up
 
-        euler = transform.eulerAngles;
+        euler = horizontalPivot.localEulerAngles;
         euler.y = angleX;
-        transform.eulerAngles = euler;
+        horizontalPivot.eulerAngles = euler;
       }
 
       if(solvedDelta.y != 0f)
       {
         angleY += solvedDelta.y; // right
 
-        euler = transform.localEulerAngles;
+        euler = verticalPivot.localEulerAngles;
         euler.x = -angleY;
 
         euler.x = Mathf.Clamp(euler.x, -75f, 75f);
 
-        transform.localEulerAngles = euler;
+        verticalPivot.localEulerAngles = euler;
       }
 
       //transform.Rotate(Vector2.up * solvedDelta.x, Space.World);
