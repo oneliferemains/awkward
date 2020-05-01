@@ -179,7 +179,8 @@ public class ConfigCategory
       return Vector2.zero;
     }
     string val = parameters[paramName];
-    val = val.Substring(1, val.Length - 2);
+    // On avait peut-être mis des des crochets pour entourer le range ?
+    // val = val.Substring(1, val.Length - 2);
     string[] min_max = val.Split(';');
     float min = float.Parse(min_max[0], NumberStyles.Any, CultureInfo.InvariantCulture);
     float max = float.Parse(min_max[1], NumberStyles.Any, CultureInfo.InvariantCulture);
