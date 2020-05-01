@@ -5,6 +5,14 @@ using UnityEngine;
 static public class HalperComponentsGenerics
 {
 
+  static public T[] getAllComponentsInHierarchy<T>(Transform context) where T : Component
+  {
+    List<T> all = new List<T>();
+    all.AddRange(context.GetComponentsInChildren<T>());
+    all.AddRange(context.GetComponentsInParent<T>());
+    return all.ToArray();
+  }
+
   /// <summary>
   /// won't include itself in the search
   /// </summary>
