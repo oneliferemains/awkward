@@ -17,6 +17,7 @@ public class ConfigFile
   protected const string CONFIG_FILE_CATEGORY_SYMBOL = "=";
   protected const string CONFIG_FILE_COMMENT = "//";
   protected const char CONFIG_FILE_PARAM_SEPARATOR = ':';
+
   protected const string CONFIG_DEFAULT_CATEGORY_NAME = "DEFAULT";
 
   string filePath = "";
@@ -38,7 +39,9 @@ public class ConfigFile
     parseFile(filePath);
   }
 
-  /* retourne l'index de la ligne de la cat */
+  /// <summary>
+  /// retourne l'index de la ligne de la cat
+  /// </summary>
   public int checkForCategory(string cat)
   {
     string path = HalperExternal.GetExternalFolderName() + filePath;
@@ -196,21 +199,6 @@ public class ConfigFile
     }
   }
 
-  public ConfigCategory GetCategory(string categoryName)
-  {
-    if (categoryName == null) return null;
-    if (categories == null) return null;
-
-    for(int i = 0; i < categories.Length; i++)
-    {
-      if(categories[i].name == categoryName)
-      {
-        return categories[i];
-      }
-    }
-    return null;
-  }
-
   void parseFile(string filename)
   {
     string path = HalperExternal.GetExternalFolderName() + filename;
@@ -246,6 +234,7 @@ public class ConfigFile
   }
 
 
+
   ConfigCategory parseCategory(string[]data, ref int idx)
   {
     string groupName = data[idx].Substring(1);
@@ -277,165 +266,68 @@ public class ConfigFile
     
     return c;
   }
-}
 
 
-public class ConfigCategory
-{
-  public string name;
-  public Dictionary<string, string> parameters;
 
-  public ConfigCategory()
+  public ConfigCategory GetCategory(string categoryName)
   {
-    parameters = new Dictionary<string, string>();
-  }
+    if (categoryName == null) return null;
+    if (categories == null) return null;
 
-  public bool hasParameter(string paramName) {
-    return parameters.ContainsKey(paramName);
-  }
-
-  public string getString(string paramName, string defaultValue = "")
-  {
-    if(!parameters.ContainsKey(paramName))
+    for (int i = 0; i < categories.Length; i++)
     {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    return val;
-  }  
-
-  public float getFloat(string paramName, float defaultValue = 0)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    return float.Parse(val, NumberStyles.Any, CultureInfo.InvariantCulture);
-  }
-
-  public int getInt(string paramName, int defaultValue = 0)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    return int.Parse(val);
-  }
-
-
-  public bool getBool(string paramName, bool defaultValue = false)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    return bool.Parse(val); 
-  }
-
-
-  public float getFloatFromRange(string paramName, float defaultValue = 0)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    val = val.Substring(1, val.Length-2);
-    string[] min_max = val.Split(';');
-    float min = float.Parse(min_max[0], NumberStyles.Any, CultureInfo.InvariantCulture);
-    float max = float.Parse(min_max[1], NumberStyles.Any, CultureInfo.InvariantCulture);
-    return Random.Range(min, max);
-  }
-
-
-  public int getIntFromRange(string paramName, int defaultValue = 0)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return defaultValue;
-    }
-    string val = parameters[paramName];
-    val = val.Substring(1, val.Length-2);
-    string[] min_max = val.Split(';');
-    int min = int.Parse(min_max[0]);
-    int max = int.Parse(min_max[1]);
-    return Random.Range(min, max);
-  }
-
-  public Vector2 getRange(string paramName)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return Vector2.zero;
-    }
-    string val = parameters[paramName];
-    val = val.Substring(1, val.Length-2);
-    string[] min_max = val.Split(';');
-    float min = float.Parse(min_max[0], NumberStyles.Any, CultureInfo.InvariantCulture);
-    float max = float.Parse(min_max[1], NumberStyles.Any, CultureInfo.InvariantCulture);
-    return new Vector2(min, max);
-  }
-
-
-  public float[] getFloatArray(string paramName)
-  {
-    if (!parameters.ContainsKey(paramName))
-    {
-      return null;
-    }
-    string val = parameters[paramName];
-    string[] arrayVals = val.Split(',');
-    float[] res = new float[arrayVals.Length];
-    for (int i = 0; i < res.Length; i++)
-    {
-      res[i] = float.Parse(arrayVals[i], NumberStyles.Any, CultureInfo.InvariantCulture);
-    }
-    return res;
-  }
-
-  public int[] getIntArray(string paramName)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return null;
-    }
-    string val = parameters[paramName];
-    string[] arrayVals = val.Split(',');
-    int[] res = new int[arrayVals.Length];
-    for(int i = 0; i < res.Length; i++)
-    {
-      res[i] = int.Parse(arrayVals[i]);
-    }
-    return res;
-  }
-
-  public Vector3[] getVector3Array(string paramName)
-  {
-    if(!parameters.ContainsKey(paramName))
-    {
-      return null;
-    }
-
-    string val = parameters[paramName];
-    Vector3[] res = null;
-    if(val.Length > 0)
-    {
-      string[] arrayVals = val.Split(')');
-      res = new Vector3[arrayVals.Length-1];
-      for(int i = 0; i < arrayVals.Length-1; i++)
+      if (categories[i].name == categoryName)
       {
-        int firstParen = arrayVals[i].IndexOf('(');
-        string s = arrayVals[i].Substring(firstParen+1);
-        string[] values = s.Split(',');
-        res[i].x = float.Parse(values[0], NumberStyles.Any, CultureInfo.InvariantCulture);
-        res[i].y = float.Parse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture);
-        res[i].z = float.Parse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture);
+        return categories[i];
       }
     }
-
-    return res;
+    return null;
   }
+
+
+  protected ConfigCategory getCategoryWithKey(string key)
+  {
+    foreach (ConfigCategory cat in categories)
+    {
+      if (cat.hasParameter(key)) return cat;
+    }
+    return null;
+  }
+
+
+
+
+  public int getInt(string key, int defaultValue = 0, string categ = CONFIG_DEFAULT_CATEGORY_NAME)
+  {
+    ConfigCategory cat = categ.Length <= 0 ? getCategoryWithKey(key) : GetCategory(categ);
+    if (cat != null && cat.hasParameter(key)) return cat.getInt(key, defaultValue);
+    return defaultValue;
+  }
+
+  public float getFloat(string key, float defaultValue = 0, string categ = CONFIG_DEFAULT_CATEGORY_NAME)
+  {
+    ConfigCategory cat = categ.Length <= 0 ? getCategoryWithKey(key) : GetCategory(categ);
+    if (cat != null && cat.hasParameter(key)) return cat.getFloat(key, defaultValue);
+    return defaultValue;
+  }
+
+  public bool getBool(string key, bool defaultValue = false, string categ = CONFIG_DEFAULT_CATEGORY_NAME)
+  {
+    ConfigCategory cat = categ.Length <= 0 ? getCategoryWithKey(key) : GetCategory(categ);
+    if (cat != null && cat.hasParameter(key)) return cat.getBool(key, defaultValue);
+    Debug.Log("default bool value for " + key + " in cat " + categ);
+    return defaultValue;
+  }
+
+  public Vector4 getVector4(string key, Vector4 defaultValue, string categ = CONFIG_DEFAULT_CATEGORY_NAME)
+  {
+    ConfigCategory cat = categ.Length <= 0 ? getCategoryWithKey(key) : GetCategory(categ);
+    if (cat != null && cat.hasParameter(key)) return cat.getVector4(key, defaultValue);
+    Debug.Log("default bool value for " + key + " in cat " + categ);
+    return defaultValue;
+  }
+
+
+
 }
+
