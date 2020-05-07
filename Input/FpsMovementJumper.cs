@@ -10,7 +10,7 @@ public class FpsMovementJumper : BasicZQSDMovement
   //float jumpTrackingForce = 0f;
 
   bool _pressJump = false;
-  bool _primeJump = false;
+  //bool _primeJump = false;
   bool _grounded = false;
 
   public LayerMask groundCheckLayer;
