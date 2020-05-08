@@ -20,6 +20,9 @@ public class ConfigFile
 
   protected const string CONFIG_DEFAULT_CATEGORY_NAME = "DEFAULT";
 
+
+  static Dictionary<string, ConfigFile> loadedFiles;
+
   string filePath = "";
   ConfigCategory[] categories;
 
@@ -30,7 +33,7 @@ public class ConfigFile
   }
 
   // this method is created because the constructor leaves unclear if the filename given is just a filename, a relative path or an absolute path
-  public static ConfigFile CreateFromExternalFolderPath(string relativeFilePath)
+  public static ConfigFile GetFromExternalFolderPath(string relativeFilePath)
   {
     return new ConfigFile(relativeFilePath);
   }
