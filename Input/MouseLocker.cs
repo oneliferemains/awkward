@@ -9,6 +9,7 @@ public class MouseLocker
   {
     if (Input.GetMouseButtonDown(0))
     {
+      if (HalperUi.IsPointerOverUIElement()) return;
       lockMouse();
     }
 
