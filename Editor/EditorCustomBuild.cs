@@ -89,7 +89,7 @@ public class EditorCustomBuild
 
     BuildPipeline.BuildPlayer(options);
 
-    Debug.Log("  L app building success !");
+    Debug.Log("  L app building is done");
 
 
     // externals
