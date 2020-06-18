@@ -26,20 +26,24 @@ public class ConfigFile
   string filePath = "";
   ConfigCategory[] categories;
 
-  public ConfigFile(string filename) 
+  /// <summary>
+  /// must feed extension
+  /// </summary>
+  public ConfigFile(string filename, bool useProfil = false)
   {
     filePath = filename;
-    parseFile(filePath);
+    parseFile(filePath, useProfil);
   }
 
   // this method is created because the constructor leaves unclear if the filename given is just a filename, a relative path or an absolute path
-  public static ConfigFile GetFromExternalFolderPath(string relativeFilePath)
+  public static ConfigFile GetFromExternalFolderPath(string relativeFilePath, bool useProfil = false)
   {
-    return new ConfigFile(relativeFilePath);
+    return new ConfigFile(relativeFilePath, useProfil);
   }
 
-  public void reload() {
-    parseFile(filePath);
+  public void reload(bool useProfil)
+  {
+    parseFile(filePath, useProfil);
   }
 
   /// <summary>
@@ -202,16 +206,23 @@ public class ConfigFile
     }
   }
 
-  void parseFile(string filename)
+  void parseFile(string filename, bool useProfil)
   {
-    string path = HalperExternal.GetExternalFolderName() + filename;
+
+    string path = "";
+
+    if (useProfil) path = Path.Combine(HalperExternal.GetExternalFolderName(), ProfileManager.getActiveProfil());
+    else path = HalperExternal.GetExternalFolderName();
+
+    path = Path.Combine(path, filename);
 
     //Debug.Log("{ConfigFile} parsing config file : "+path);
 
     if (!File.Exists(path))
     {
       Debug.LogWarning("{ConfigFile} didn't find config file at path " + path);
-    }else
+    }
+    else
     {
       List<ConfigCategory> parametersList = new List<ConfigCategory>();
       string[] lines = File.ReadAllLines(path);
